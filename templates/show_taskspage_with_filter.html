@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tasks</title>
+</head>
+<body>
+<p>here is your task page,you can see filted tasklist by status</p>
+<p>the pending tasks</p>
+<ul>
+  {%for task in task_list%}
+  {%if task["status"] == "pending"%}
+  <li>
+    <p>task ID: {{ task["id"] }}
+    <p>task description: {{ task["description"] }}
+    <p>task category: {{ task["category"] }}
+  </li>
+  {%endif%}
+  {%endfor%}
+</ul>
+
+<p>the finished tasks</p>
+<ul>
+  {%for task in task_list%}
+  {%if task["status"] == "finished"%}
+  <li>
+    <p>task ID: {{ task["id"] }}
+    <p>task description: {{ task["description"] }}
+    <p>task category: {{ task["category"] }}
+  </li>
+  {%endif%}
+  {%endfor%}
+</ul>
+
+
+
+
+<form action="/" method="get">
+    <button type="submit">GO BACK</button>
+</form>
+</body>
+</html>
