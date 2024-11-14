@@ -1,9 +1,8 @@
 from crypt import methods
 
-from flask import Flask, request, render_template, jsonify, url_for
+from flask import Flask, request, render_template, jsonify
 import json
 
-from werkzeug.utils import redirect
 
 app = Flask(__name__)
 
@@ -22,6 +21,7 @@ def show_index():
 #get tasks
 @app.route("/tasks",methods=["GET"])
 def show_tasks():
+    #the result of request.args or .get_json is a dict, so need to use get to take out the value
     status = request.args.get("status")
     filteded_task_list_pending = []
     filteded_task_list_completed = []
@@ -86,7 +86,21 @@ def modify_task_by_id(id):
     return jsonify({"error":"no such task"}),404
 
 
+#the decorator to check the tocken. correct password = 123
+#1.sent the func to pass_check as parameter
+#2.create a inner fun to gathering every thing as parameter
+#3.set the if to check if the password is correct, if true then run the delete, if not return 401, whi mneas unauthorized
+def pass_check(delete_task_by_id):
+    def wrapper(*args,**kwargs):
+        password = request.args or request.get_json()
+        if password.get("password") == "123":
+            return delete_task_by_id(*args,**kwargs)
+        else:
+            return jsonify({"error":"can not delete task, wrong password"}),401
+    return wrapper
+
 @app.route("/tasks/<int:id>", methods=["DELETE"])
+@pass_check
 def delete_task_by_id(id):
     for task in task_list:
         if task["id"] == id:
@@ -96,8 +110,6 @@ def delete_task_by_id(id):
 
 
 
-
-#put status(override the post) by id
 @app.route("/tasks/<int:id>/complete",methods=["PUT"])
 def change_task_status_by_id(id):
     for task in task_list:
