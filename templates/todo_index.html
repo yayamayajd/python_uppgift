@@ -5,9 +5,9 @@
     <title>My to do List</title>
 </head>
 <p><h1>----TO DO LIST----</h1>
-<p><h4>Hi, I am your personal assistant J, nice to see you!</h4>
+<p><h3>Hi, I am your personal assistant J, nice to see you!</h3>
 <body>
-<p>here is your task list:</p>
+<h4>Here is your task list:</h4>
     <ul>
         {% for task in task_list %}
         <li>
@@ -20,22 +20,11 @@
         {% endfor %}
     </ul>
 
-    <form action="/submit" method="post">
-    <input type="number" name="id" placeholder="fill in the id here"><input type="text" name="description" placeholder="fill in the description"><input type="text" name="category" placeholder="fill in the category"><input type="text" name="status" placeholder="fill in the status">
-    <button type="submit">apply</button>
-  </form>
+    <form action="{{ url_for('add_task')}}" method="post">
+    <input type="number" name="id" placeholder="fill in the id here"><input type="text" name="description" placeholder="fill in the description"><input type="text" name="category" placeholder="fill in the category">
+    <button type="submit">add a task</button>
+    </form>
 
-<p></p>
-<form action="/tasks" method="get">
-    <button type="submit">go task editer</button>
-</form>
-
-
-
-<p></p>
-<form action="/tasks/categories" method="get">
-    <button type="submit">go category list</button>
-</form>
 
 </body>
 </html>
